@@ -1,0 +1,50 @@
+--Cpirulo 07 - sub-consultas
+
+--
+SELECT COD_CONTRATO, DATA ,TOTAL
+FROM TCONTRATO
+WHERE TOTAL >=
+  ( SELECT VALOR FROM TCURSO
+    WHERE COD_CURSO = 3);
+
+-- Errado, só pode retornar uma lina na subconsulta
+SELECT COD_CONTRATO, DATA, TOTAL
+FROM TCONTRATO
+WHERE TOTAL >=
+  ( SELECT VALOR FROM TCURSO
+    WHERE VALOR > 500);
+
+--Todos os alunos da mesma cidade do aluno 1
+--menos o aluno 1
+SELECT COD_ALUNO, NOME, CIDADE
+FROM TALUNO
+WHERE CIDADE = ( SELECT CIDADE FROM TALUNO
+                  WHERE COD_ALUNO = 2 )
+AND COD_ALUNO != 2;
+
+--Todos os alunos da mesma cidade e estado do aluno 2
+--menos o aluno 2
+SELECT COD_ALUNO, NOME, CIDADE, ESTADO
+FROM TALUNO
+WHERE (CIDADE, ESTADO) =
+          ( SELECT CIDADE, ESTADO FROM TALUNO
+            WHERE COD_ALUNO = 10 )
+AND COD_ALUNO != 10 ;
+
+SELECT * FROM TALUNO;
+
+UPDATE TALUNO SET
+CIDADE = 'CAMARAGIBE'
+WHERE COD_ALUNO = 24;
+
+--Soma todos os itens, e mostra somente cujo o
+--valor minimo seja maior que o valor medio
+--dos cursos
+SELECT COD_CURSO, Min (VALOR), Sum (VALOR),
+        Count (*) QTDE
+FROM TITEM
+WHERE COD_CURSO > 0
+GROUP BY COD_CURSO
+HAVING Min (VALOR) >
+       (SELECT Avg (VALOR) FROM TCURSO)
+ORDER BY COD_CURSO;

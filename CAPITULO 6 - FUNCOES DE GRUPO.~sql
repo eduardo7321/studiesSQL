@@ -1,0 +1,15 @@
+capitulo 6
+--funcoes em grupo
+
+SELECT * FROM TCONTRATO;
+
+
+SELECT Count(*) AS QTDE_REGISTRO,
+       Avg (TOTAL) AS MEDIA,
+       Round(Avg(TOTAL), 2) AS MEDIA,
+       Max (TOTAL) AS MAXIMO,
+       Min (TOTAL) AS MININMO,
+       Sum (TOTAL) AS SOMA,
+       Max (DATA) AS DATA_MAIOR,
+       Min (DATA) AS DATA_MENOR
+FROM TCONTRATO;

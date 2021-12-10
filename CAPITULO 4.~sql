@@ -1,0 +1,140 @@
+CAPITULO 4
+
+SELECT * FROM TALUNO;
+
+--
+SELECT Concat (COD_ALUNO, NOME) AS ID_E_NOME FROM TALUNO;
+
+--
+SELECT (COD_ALUNO || ' - ' || NOME) AS ID_E_NOME FROM TALUNO
+ORDER BY COD_ALUNO ASC;
+
+SELECT NOME, InitCap(COD_ALUNO || ' - ' || NOME) AS ID_E_NOME FROM TALUNO
+ORDER BY COD_ALUNO ASC;
+
+--
+SELECT InitCap (nome) FROM TALUNO;
+
+--
+SELECT NOME, InStr(NOME,'R') FROM TALUNO;
+
+--
+SELECT NOME, Length(NOME) FROM TALUNO;
+
+SELECT * FROM TALUNO;
+
+--
+SELECT nome, Lower (NOME) FROM TALUNO;
+
+--
+SELECT NOME, Upper (NOME) FROM TALUNO;
+
+SELECT InitCap('JOSE DA SILVA') FROM DUAL;
+
+SELECT LPad(cod_aluno, 5, '0') FROM taluno;
+
+SELECT NOME, SALARIO, RPad (SALARIO, 8, 0) FROM TALUNO;
+
+SELECT RPad (NOME, 10, '$') FROM TALUNO;
+
+--copia parte de um exto
+--substr ( caompo/texto, posicao, qtde de caract )
+SELECT NOME, SubStr (NOME, 1, 3) FROM TALUNO;
+
+--
+SELECT NOME, SubStr (NOME, 1, 1) FROM TALUNO;
+
+--
+SELECT NOME, SubStr (NOME, 3, 1) FROM TALUNO;
+
+SELECT REPLACE(Upper(NOME), 'R', '$') FROM TALUNO;
+
+--
+SELECT NOME, SubStr(NOME, 5, 1) FROM TALUNO;
+SELECT NOME, SubStr(NOME, Length(NOME), 1) FROM TALUNO;
+
+SELECT NOME, SubStr(NOME, Length(NOME) - 1, 2) FROM TALUNO;
+
+SELECT NOME, SubStr(NOME, 3, Length(NOME) - 3 ) FROM TALUNO;
+
+--
+SELECT * FROM TALUNO
+WHERE Lower(NOME) = 'marcio';
+
+SELECT * FROM taluno
+WHERE Upper(NOME) = 'MARCIO';
+
+SELECT * FROM TALUNO
+WHERE Upper(SubStr(CIDADE, 1, 3)) = 'CAN';
+
+UPDATE TALUNO SET
+SALARIO = 633.47
+WHERE COD_ALUNO = 1;
+
+SELECT
+  SALARIO,
+  REPLACE(SALARIO, '.' , '') AS SALARIO_SEM_PONTO,
+  RPad(SALARIO, 10, '0') AS SALARIO_ZERO_A_DIREITA,
+  LPad(SALARIO, 10, '0') AS SALARIO_ZERO_A_ESQUERDA,
+  LPad(REPLACE(SALARIO, '.', ''), 10, '0') AS SALA_ZERO_ESQ_SEM_PONTO
+FROM TALUNO;
+
+--------------------------data
+SELECT * FROM DUAL;
+
+--sysdate retorna data/hora do servidor.
+SELECT SYSDATE FROM DUAL;
+
+-- round e trunc
+SELECT Round (45.925, 2), --45.93
+       Trunc (45.929, 2), --45.92
+       Mod   (10, 2) AS RESTO_DIVISAO,
+       Trunc (1.99),
+       Trunc (1.99 , 2)
+FROM DUAL;
+
+SELECT * FROM TCONTRATO;
+
+--funcoes de data/hora
+SELECT DATA, SYSDATE, DATA +5 FROM TCONTRATO;
+
+SELECT SYSDATE - DATA AS  DIF_DIAS FROM TCONTRATO;
+
+SELECT Trunc (SYSDATE - DATA) AS DIAS FROM TCONTRATO;
+
+--somar horas em uma data
+SELECT SYSDATE, SYSDATE + 2 / 24  AS ADD_HORAS FROM TCONTRATO;
+
+--somar minutos em uma data
+SELECT SYSDATE, SYSDATE + 15 / 1440  AS ADD_MINUTOS FROM TCONTRATO;
+
+--somar segundos em uma data
+SELECT SYSDATE,  SYSDATE + 30 / (3600 * 24) AS ADD_SEGUNDOS FROM TCONTRATO;
+
+--Hora fica 00:00:00
+SELECT SYSDATE, Trunc(SYSDATE) FROM DUAL;
+
+--Diferenca de meses entre datas
+SELECT Months_Between (SYSDATE, SYSDATE - 69) AS DIFE_MESES FROM DUAL;
+
+SELECT Trunc (Months_Between (SYSDATE, SYSDATE - 69) , 2) AS DIFE_MESES FROM DUAL;
+
+--Adiciona meses
+SELECT ADD_MONTHS (SYSDATE, 5) AS ADICIONA_MES_DATA FROM DUAL;
+
+--Prosxima data apartir de um dia da semana
+SELECT Next_Day (SYSDATE, 'MONDAY') AS PROX_QUARTA_DATA FROM DUAL;
+
+--Ultimo dia do mes
+SELECT Last_Day (SYSDATE) AS ULTIMO_DIA_MES FROM DUAL;
+
+--Primeiro dia do proximo mes
+--até dia 15 pega o prmeiro dia do mes atual
+--a partir do dia 16 retorna o primeiro dia do proximo mes
+SELECT Round (SYSDATE, 'MONTH') AS PRIMEIRO_DIA_ATUAL_MES FROM DUAL;
+
+--Primeiro dia do mes atual
+SELECT Trunc (SYSDATE, 'MONTH') AS DIA_PRIMEIRO_MES_ATUAL FROM DUAL;
+
+--Formatacao de data
+

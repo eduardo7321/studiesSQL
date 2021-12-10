@@ -1,0 +1,131 @@
+capitulo 6
+--funcoes em grupo
+
+SELECT * FROM TCONTRATO;
+
+
+SELECT Count(*) AS QTDE_REGISTRO,
+       Avg (TOTAL) AS MEDIA,
+       Round(Avg(TOTAL), 2) AS MEDIA,
+       Max (TOTAL) AS MAXIMO,
+       Min (TOTAL) AS MININMO,
+       Sum (TOTAL) AS SOMA,
+       Max (DATA) AS DATA_MAIOR,
+       Min (DATA) AS DATA_MENOR
+FROM TCONTRATO;
+
+--Proximo código seuencial tabela
+SELECT Max (COD_CONTRATO) + 1 AS PROXIMO_CODIGO
+FROM TCONTRATO;
+
+--
+SELECT * FROM TALUNO;
+SELECT * FROM TCONTRATO;
+
+--Total de contratos por aluno
+SELECT COD_ALUNO,
+       Count(*) AS QTDE_CONTRATO,
+       Sum (TOTAL) AS VALOR_TOTAL
+FROM TCONTRATO
+GROUP BY COD_ALUNO
+
+SELECT To_Char(Trunc(SYSDATE), 'DD/MM/YYYY') AS DATA FROM DUAL;
+
+--Total de contrato por data
+SELECT To_Char(Trunc(DATA), 'DD/MM/YYYY') AS DATA,
+       Sum (TOTAL) AS SOMA,
+       Avg (TOTAL) AS MEDIA,
+       Count (*) AS QTDE
+FROM TCONTRATO
+GROUP BY Trunc (DATA)
+ORDER BY DATA DESC;
+
+----------------------------
+
+UPDATE TCONTRATO SET
+  DESCONTO = NULL
+WHERE COD_CONTRATO = 4;
+
+UPDATE TCONTRATO SET
+  DESCONTO = NULL
+WHERE COD_CONTRATO = 3;
+
+SELECT Count (*) AS QTDE_REGISTROS
+FROM TCONTRATO;
+
+SELECT * FROM TCONTRATO;
+
+--count -> ignora nulos
+SELECT Count (DESCONTO)
+FROM TCONTRATO;
+
+-- Transformando campos nulos da coluna desconto em zero para entrar na conta do count
+SELECT Count (Nvl(DESCONTO, 0))
+FROM TCONTRATO;
+
+--Qtde de registro com estado informado
+SELECT Count (ESTADO) FROM TALUNO;
+
+SELECT * FROM TALUNO;
+
+--Qtde de estados diferentes
+SELECT Count(DISTINCT (ESTADO)) AS QTDE_DE_ESTADOS FROM TALUNO;
+
+UPDATE TALUNO SET
+  ESTADO = 'PE'
+WHERE COD_ALUNO = 24;
+
+--Qtde de registro por estado
+SELECT ESTADO,
+       Count (*)
+FROM TALUNO
+GROUP BY ESTADO;
+
+--
+SELECT Sum (DESCONTO),
+       Avg (DESCONTO),
+       Round (Avg (Nvl( DESCONTO, 0)), 2),
+       Count (DESCONTO),
+       Count (Nvl (DESCONTO, 0))
+FROM TCONTRATO;
+
+SELECT * FROM TCONTRATO;
+
+--Total de contrato por estado e data
+SELECT ALU.ESTADO, Trunc (CON.DATA) AS DATA,
+        Sum (CON.TOTAL) AS TOTAL, Count (*) AS QTDE
+
+FROM TALUNO ALU, TCONTRATO CON
+WHERE ALU.COD_ALUNO = CON.COD_ALUNO
+GROUP BY ALU.ESTADO, Trunc (CON.DATA)
+ORDER BY ALU.ESTADO, DATA DESC;
+
+--
+SELECT ALU.ESTADO,
+        Sum (CON.TOTAL) AS TOTAL, Count (*) AS QTDE
+
+FROM TALUNO ALU, TCONTRATO CON
+WHERE ALU.COD_ALUNO = CON.COD_ALUNO
+GROUP BY ALU.ESTADO
+ORDER BY ALU.ESTADO;
+
+--Having - filtrar coluna com funcao de groupo
+SELECT COD_ALUNO, Round (Avg (TOTAL), 2) MEDIA
+FROM TCONTRATO
+WHERE COD_ALUNO > 0
+HAVING Avg (TOTAL) > 500
+GROUP BY COD_ALUNO
+ORDER BY COD_ALUNO;
+
+--Media mais alta por aluno
+SELECT Max (Avg (TOTAL))
+FROM TCONTRATO
+GROUP BY COD_ALUNO;
+
+--Soma dos salarios por estado
+SELECT ESTADO, Sum (SALARIO) AS TOTAL
+FROM TALUNO
+GROUP BY ESTADO
+ORDER BY 2 DESC;
+
+--
